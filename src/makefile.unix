@@ -108,7 +108,7 @@ include Makefile.include.objs
 
 all: gridcoinresearchd
 
-gridcoinresearchd: obj
+gridcoinresearchd:: obj
 
 LIBS += $(CURDIR)/leveldb/libleveldb.a $(CURDIR)/leveldb/libmemenv.a
 DEFS += $(addprefix -I,$(CURDIR)/leveldb/include)
@@ -120,6 +120,7 @@ obj:
 
 leveldb/libleveldb.a:
 	@echo "Building LevelDB ..."; cd leveldb; make libleveldb.a libmemenv.a; cd ..;
+
 obj/txdb-leveldb.o: leveldb/libleveldb.a
 
 # auto-generated dependencies:
@@ -146,7 +147,7 @@ obj/%.o: %.cpp
 	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 	  rm -f $(@:%.o=%.d)
 
-gridcoinresearchd: $(OBJS:obj/%=obj/%)
+gridcoinresearchd:: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
 clean:
